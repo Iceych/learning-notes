@@ -12,51 +12,55 @@
               2）不使用XHR(XMLHttpRquest)请求->JSONP
               3）解决跨域->调整被调用方（后台）以支持跨域 | 调整调用方（前端）以隐藏跨域
   2-1、浏览器禁止检查：命令行参数启动：chrome --disable-web-security --user-data-dir=g:\temp3
-  2-2、JSONP（json padding）解决跨域：与普通请求的区别：1）请求类型type为script脚本而不是xhr
-                                      2）返回类型content-type为application/javascript而不是application/json
-                                      3）请求地址自动生成callback参数值，后台根据callback参数来确定请求为JSONP方式从而返回一个以callback参数值为
-                                         名称、响应数据为参数的函数调用
-                                         $.ajax({
-                                          url:'',
-                                          dataType:'JSONP' ,
-                                          jsonp:'callback',
-                                          success:function(json){
-                                            result = json;
-                                          }
-                                         })
-                      JSONP的弊端：1）服务器需要改动代码支持；
-                                  2）只支持GET；
-                                  3）发送的不是XHR请求；
-   2-3-1、调整被调用方以支持跨域：filter方案:1)浏览器处理跨域时会先判断是否为简单请求，若是，则先执行再判断是否存在跨域问题；
-                                            若为非简单请求，则先发一个options预检命令，检查通过之后才会发送请求；
-                                            tips:简单请求：方法为GET、HEAD、POST之一；
-                                                          header里面无自定义头；
-                                                          content-type为text/plain、multipart/form-data、application/x-www-form-urlencoded之一
-                                                 非简单请求：方法为put、delete之一的Ajax请求
-                                                            发送json格式的Ajax请求
-                                                            带自定义头的Ajax请求
-                                          2）浏览器判断的时候如果发现请求为跨域的，则会在请求头里面添加“Origin”字段，党响应返回的时候，浏览器即检查
-                                             响应头有没有允许跨域的信息，如果没有就会报错；
-                                          3）服务器filter支持跨域（filter增加响应头）：
-                                              response.addHeader("Access-Control-Allow-Origin", "http://localhost:8081");
-                                              //response.addHeader("Access-Control-Allow-Origin", "*");允许所有域（不能满足带cookie的跨域请求）
-                                              response.addHeader("Access-Control-Allow-Methods", "GET");
-                                              //response.addHeader("Access-Control-Allow-Methods", "*");允许所有方法
-                                              response.addHeader("Access-Control-Allow-Headers", "Content-Type");//非简单请求使用
-                                              //response.addHeader("Access-Control-Allow-Headers", "*");允许所有方法
-                                              response.addHeader("Access-Control-Max-Age","3600");
-                                                =>预检命令缓存，表示告诉浏览器在一个小时内可以缓存以上信息，不需要再发送预检命令；
-                                          带cookie的跨域：
-                                              //请求带cookie的时候，origin必须为全匹配，不能使用*，且必须配置一下字段
-                                              response.addHeader("Access-Control-Allow-Credentials", "true");
-                                          4）支持任何域名的跨域调用，服务器可以根据请求头的origin字段动态设置允许域名
-                                              response.addHeader("Access-Control-Allow-Origin", origin);
-                                          5）带自定义头的跨域：
-                                              添加自定义头到Access-Control-Allow-Headers里即可，如，
-                                              response.addHeader("Access-Control-Allow-Headers", "Content-Type, x-headre1, x-header2");
-                                              建议：如支持origin一样，可动态设置请求头
-                                NGINX方案：1）配置hosts
-                                            
+  2-2、JSONP（json padding）解决跨域：
+            与普通请求的区别：1）请求类型type为script脚本而不是xhr
+                          2）返回类型content-type为application/javascript而不是application/json
+                          3）请求地址自动生成callback参数值，后台根据callback参数来确定请求为JSONP方式从而返回一个以callback参数值为
+                             名称、响应数据为参数的函数调用
+                             $.ajax({
+                              url:'',
+                              dataType:'JSONP' ,
+                              jsonp:'callback',
+                              success:function(json){
+                                result = json;
+                              }
+                             })
+            JSONP的弊端：1）服务器需要改动代码支持；
+                      2）只支持GET；
+                      3）发送的不是XHR请求；
+   2-3-1、调整被调用方以支持跨域：
+            filter方案:1)浏览器处理跨域时会先判断是否为简单请求，若是，则先执行再判断是否存在跨域问题；
+                        若为非简单请求，则先发一个options预检命令，检查通过之后才会发送请求；
+                        tips:简单请求：方法为GET、HEAD、POST之一；
+                                      header里面无自定义头；
+                                      content-type为text/plain、multipart/form-data、application/x-www-form-urlencoded之一
+                             非简单请求：方法为put、delete之一的Ajax请求
+                                        发送json格式的Ajax请求
+                                        带自定义头的Ajax请求
+                      2）浏览器判断的时候如果发现请求为跨域的，则会在请求头里面添加“Origin”字段，党响应返回的时候，浏览器即检查
+                         响应头有没有允许跨域的信息，如果没有就会报错；
+                      3）服务器filter支持跨域（filter增加响应头）：
+                          response.addHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+                          //response.addHeader("Access-Control-Allow-Origin", "*");允许所有域（不能满足带cookie的跨域请求）
+                          response.addHeader("Access-Control-Allow-Methods", "GET");
+                          //response.addHeader("Access-Control-Allow-Methods", "*");允许所有方法
+                          response.addHeader("Access-Control-Allow-Headers", "Content-Type");//非简单请求使用
+                          //response.addHeader("Access-Control-Allow-Headers", "*");允许所有方法
+                          response.addHeader("Access-Control-Max-Age","3600");
+                            =>预检命令缓存，表示告诉浏览器在一个小时内可以缓存以上信息，不需要再发送预检命令；
+                      带cookie的跨域：
+                          //请求带cookie的时候，origin必须为全匹配，不能使用*，且必须配置一下字段
+                          response.addHeader("Access-Control-Allow-Credentials", "true");
+                      4）支持任何域名的跨域调用，服务器可以根据请求头的origin字段动态设置允许域名
+                          response.addHeader("Access-Control-Allow-Origin", origin);
+                      5）带自定义头的跨域：
+                          添加自定义头到Access-Control-Allow-Headers里即可，如，
+                          response.addHeader("Access-Control-Allow-Headers", "Content-Type, x-headre1, x-header2");
+                          建议：如支持origin一样，可动态设置请求头
+            NGINX方案：1）配置hosts
+            Apache方案：同NGINSX
+            Spring方案：增加注解@CrossOrigin(可加在类上面，也可加在方法上面)
+    2-3-2、调用方解决方案-隐藏跨域：                                                  
                                               
                                               
                                          
