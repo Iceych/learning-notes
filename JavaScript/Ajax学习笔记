@@ -1,0 +1,82 @@
+1、定义：Ajax不是某种编程语言，而是一种在无需重新加载整个网页的情况下能够更新部分网页的技术。
+2、重要概念：同步：请求->处理->响应->页面载入只能依次执行，需要等待大量时间；
+            异步：提交部分信息的同时客户端可以处理其他业务；
+3、实现异步的关键即XMLHttpRequest（简称XHR）对象<--IE6以下不支持
+4、实现Ajax技术的条件：1）运用HTML和CSS来实现页面，表达信息；
+                      2）运用XMLHttpRequest和web服务器进行数据的异步交换；
+                      3）运用JavaScript操作DOM，实现动态局部刷新；
+5、HTTP协议请求过程：
+    1）建立TCP连接
+    2）Web浏览器向Web服务器发送请求命令
+    3）Web浏览器发送请求头信息
+    4）Web服务器应答
+    5）Web服务器发送应答头信息
+    6）Web服务器向浏览器发送数据
+    7）Web服务器关闭TCP连接
+6、HTTP状态码类别：
+    1）1XX：信息类，表示收到Web浏览器请求，正在进一步的处理中
+    2）2XX：成功，表示用户请求被正确接收，理解和处理，例如，200 OK
+    3）3XX：重定向，表示请求没有成功，客户必须采取进一步的动作
+    4）4XX：客户端错误，表示客户端提交的请求有错误，例如：404 NOT Found，意味着请求中所引用的文档不存在
+    5）5XX：服务器错误，表示服务器不能完成对请求的处理：如 500
+7、XMLHttpRequest取得响应：
+    1）responseText:获得字符串形式的响应数据
+    2）responseXML:获得XML形式的响应数据
+    3）status和statusText:以数字和文本形式返回HTTP状态码
+    4）getAllResponseHeader():获取所有的响应报头
+    5）getResponseHeader():查询响应中的某个字段的值
+    6）readyState属性：请求过程中服务器响应的通知
+8、readyState属性：
+    0：请求未初始化，open还没有调用
+    1：服务器连接已建立，open已经调用了
+    2：请求已接收，也就是接收到头信息了
+    3：请求处理中，也就是接收到响应主体了
+    4：请求已完成，且响应已就绪，也就是响应完成了
+9、XHR的实现：var request;
+              if(window.XMLHttpRequest){
+                request = new XMLHttpRequest(); //IE7+,Firefox,Chrome,Opera,Safari...
+              }else{
+                request = new ActiveXObject("Microsoft.XMLHTTP"); //IE5,IE6
+              }
+              GET请求：
+              request.open("GET", "get.php", true) //第三个参数表示异步请求，false表示同步请求，默认为true
+              request.send();
+              
+              POST请求：
+              request.open("POST", "create.php", true);
+              request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+              request.send("name=王二狗&sex=男");
+              
+              获取服务器响应：
+              //监听onreadystatechange事件
+              request.onreadystatechange = function(){
+                if(request.readyState === 4 && request.status === 200){
+                  //做一些事情 request.responseText
+                  document.getElementById("xx").innerHTML = request.responseText;
+                }
+              }
+10、用jQuery实现Ajax：
+    $(document).ready(function(){
+      $("#search").click(function(){
+        $.ajax({
+          type:"POST",
+          url:"service.php?number=" + $("#keyword").val(),
+          dataType:"json",
+          data:{
+            name: "",
+            age: ""
+          },
+          success:function(data){
+            if(data.success){
+              $("#xx").html(data.msg);
+            }else{
+              $("#xx").html("出现错误" + data.msg);
+            }
+          },
+          error:function(jqXHT){
+            alert("发生错误：" + jqXHR.status);
+          }
+        });
+      });
+    });
+              
