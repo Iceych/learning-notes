@@ -1,0 +1,6 @@
+初始化仓库： git init
+添加文件到暂存区： git add <file>
+提交修改到仓库： git commit -m <message>
+
+注意：！
+1、所有的版本控制系统只能跟踪文本文件的改动，无法跟踪二进制文件的变化，Microsoft的Word文件就是二进制格式的；
