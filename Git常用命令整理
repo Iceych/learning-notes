@@ -1,6 +1,22 @@
 初始化仓库： git init
+查看仓库当前的状态：git status
 添加文件到暂存区： git add <file>
 提交修改到仓库： git commit -m <message>
+查看历史提交记录：git log   （--pretty=oneline简化输出信息）
+回退到上一个版本：git reset --hard HEAD^ // git reset --hard HEAD~1 // git reset --hard <版本号>(版本号可以不用写全)
+查看历史命令：git reflog
+丢弃工作区的修改：git checkout -- <file> (让文件回到最近一次git commit或git add时的状态)
+撤销暂存区的修改，重新放回工作区：git reset HEAD <file>
+删除一个文件：git rm <file>
+关联远程仓库到本地：git remote add origin <URL>
+推送本地内容到远程库同时关联master分支：git push -u origin master(-u => --set-upstream)
+克隆一个仓库：git clone <URL>
+查看分支：git branch
+创建分支：git branch <name>
+切换分支：git checkout <name>或者git switch <name>
+创建+切换分支：git checkout -b <name>或者git switch -c <name>
+合并某分支到当前分支：git merge <name>
+删除分支：git branch -d <name>
 
 注意：！
 1、所有的版本控制系统只能跟踪文本文件的改动，无法跟踪二进制文件的变化，Microsoft的Word文件就是二进制格式的；
