@@ -3,6 +3,7 @@
 添加文件到暂存区： git add <file>
 提交修改到仓库： git commit -m <message>
 查看历史提交记录：git log   （--pretty=oneline简化输出信息）
+简化commitId查看历史提交记录：git log --pretty=oneline --abbrev-commit
 回退到上一个版本：git reset --hard HEAD^ // git reset --hard HEAD~1 // git reset --hard <版本号>(版本号可以不用写全)
 查看历史命令：git reflog
 丢弃工作区的修改：git checkout -- <file> (让文件回到最近一次git commit或git add时的状态)
@@ -17,6 +18,28 @@
 创建+切换分支：git checkout -b <name>或者git switch -c <name>
 合并某分支到当前分支：git merge <name>
 删除分支：git branch -d <name>
+查看分支合并图：git log --graph
+暂存工作现场：git stash
+恢复工作现场：git stash apply(恢复后需手动删除 git stash drop)
+             git stash pop(恢复的同时删除stash内容)
+查看暂存区：git stash list
+指定恢复的stash：git stash apply stash@[0]
+复制特定的提交到当前分支：git cherry-pick 4c805a2
+强制删除分支：git branch -D <branch-name>
+查看远程库的信息：git remote -v
+创建本地分支同时与远程分支关联：git checkout -b dev origin/dev
+建立本地分支与远程分支的链接：git branch --set-upstream-to <branch-name> origin/<banch-name>
+从远程抓取分支：git pull
+新建标签：git tag <tagname>
+新建标签到指定commit上：git tag <tagname> <commitId>
+指定标签信息：git tag -a <tagname> -m "blablabla..."
+查看所有标签：git tag
+查看标签信息：git show <tagname>
+删除标签：git tag -d <tagname>
+推送标签到远程：git push origin <tagname>
+一次性推送所有本地标签到远程：git push origin --tags
+删除远程标签：git tag -d v1.0
+            git push origin :refs/tags/v1.0
 
 注意：！
 1、所有的版本控制系统只能跟踪文本文件的改动，无法跟踪二进制文件的变化，Microsoft的Word文件就是二进制格式的；
