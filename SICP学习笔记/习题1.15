@@ -1,2 +1,24 @@
 a) 5次；
 b) 空间和步数的增长阶：以3为底n的对数O(n)=log3(n);
+
+源码：
+/**
+ * @description 弧度计算函数的步数
+ * @param {*} a 弧度值
+ * @returns 计算步数
+ */
+function test(a) {
+  let total = 0;
+  function p(x) {
+    total += 1;
+    return 3 * x - 4 * x ** 3 ;
+  }
+  function sine(angle) {
+    if (Math.abs(angle) <= 0.1) return angle;
+    return p(sine(angle / 3.0));
+  }
+  console.log(sine(a))
+  return total;
+}
+
+实例：test(12.15);
