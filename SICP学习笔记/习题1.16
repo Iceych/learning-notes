@@ -1,3 +1,4 @@
+
 /**
  * @description 求幂（递归法）
  * @param {*} digit 底数
@@ -8,6 +9,8 @@ function expt(digit, count) {
   if (count === 0) return 1;
   return digit * expt(digit, count - 1);
 }
+
+实例：expt(2, 6);
 
 /**
  * @description 求幂（迭代法）
@@ -22,6 +25,40 @@ function exptIter(digit, count) {
   }
   return iter(digit, count, 1);
 }
+实例：exptIter(2, 6);
 
-expt(2, 6);
-exptIter(2, 6);
+/**
+ * @description 求幂（连续求平方 - 递归法）
+ * @param {Number} digit 底数
+ * @param {Number} count 指数
+ * @returns
+ */
+function exptSquare(digit, count) {
+  if (count === 0) return 1;
+  if (count % 2 === 0) {
+    // 偶数
+    return exptSquare(digit, count / 2) ** 2;
+  }
+  // 奇数
+  return exptSquare(digit, (count - 1) / 2) ** 2 * digit;
+}
+实例：exptSquare(2, 6);
+
+/**
+ * @description 求幂（连续求平方 - 迭代法）
+ * @param {Number} digit 底数
+ * @param {Number} count 指数
+ * @returns
+ */
+function exptSquareIter(digit, count) {
+  function iter(b, n, res, ext) {
+    if (n <= 1) return res * ext;
+    if (n % 2 === 0) {
+      // 偶数
+      return iter(b, n / 2, res ** 2, ext);
+    }
+    return iter(b, (n - 1) / 2, res ** 2, ext * res);
+  }
+  return iter(digit, count, digit, 1);
+}
+实例：exptSquareIter(2, 6);
