@@ -1,0 +1,27 @@
+/**
+ * @description 求幂（递归法）
+ * @param {*} digit 底数
+ * @param {*} count 指数
+ * @returns
+ */
+function expt(digit, count) {
+  if (count === 0) return 1;
+  return digit * expt(digit, count - 1);
+}
+
+/**
+ * @description 求幂（迭代法）
+ * @param {Number} digit 底数
+ * @param {Number} count 指数
+ * @returns
+ */
+function exptIter(digit, count) {
+  function iter(b, n, res) {
+    if (n === 0) return res;
+    return iter(b, n - 1, b * res);
+  }
+  return iter(digit, count, 1);
+}
+
+expt(2, 6);
+exptIter(2, 6);
