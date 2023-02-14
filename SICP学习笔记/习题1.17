@@ -10,7 +10,7 @@ function multi(a, b) {
 实例：multi(6, 7)
 
 /**
- * @description 乘法运算（两倍法，辅助*2、/2的运算）
+ * @description 乘法运算（两倍法，辅助*2、/2的运算） - 递归法
  * @param {*} a 乘数
  * @param {*} b 乘数
  */
@@ -22,14 +22,8 @@ function multiFast(a, b) {
     return x * 2;
   }
 
-  function iter(x, y, res) {
-    if (y === 0) return res;
-    if (y % 2 === 0) {
-      // 偶数
-      return iter(double(x), halve(y), res);
-    }
-    return iter(x, y - 1, x + res);
-  }
-  return iter(b, a, 0);
+  if (b === 0) return 0;
+  if (b % 2 === 0) return multiFast(double(a), halve(b));
+  return a + multiFast(a, b - 1);
 }
 实例：multiFast(8, 19)
