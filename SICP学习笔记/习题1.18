@@ -1,0 +1,23 @@
+/**
+ * @description 乘法运算（两倍法，辅助*2、/2的运算） - 迭代法
+ * @param {*} a 乘数
+ * @param {*} b 乘数
+ */
+function multiFastIter(a, b) {
+  function halve(x) {
+    return x / 2;
+  }
+  function double(x) {
+    return x * 2;
+  }
+
+  function iter(x, y, res) {
+    if (y === 0) return res;
+    if (y % 2 === 0) {
+      // 偶数
+      return iter(double(x), halve(y), res);
+    }
+    return iter(x, y - 1, x + res);
+  }
+  return iter(b, a, 0);
+}
