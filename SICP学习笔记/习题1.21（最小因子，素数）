@@ -1,0 +1,70 @@
+
+/**
+ * @description 获取一个数的最小因子（基于O(根号n)）
+ * @param {*} digit
+ * @returns
+ */
+function smallestDivisor(digit) {
+  function findDivisor(n, test) {
+    if (test * test > n) return n;
+    if (n % test === 0) return test;
+    return findDivisor(n, test + 1);
+  }
+  return findDivisor(digit, 2);
+}
+
+实例：smallestDivisor(7);
+
+/**
+ * @description base ** exp % m （递归法）
+ * @param {*} base
+ * @param {*} exp
+ * @param {*} m
+ * @returns
+ */
+function expmod(base, exp, m) {
+  if (exp <= 0) return 1;
+  if (exp % 2 === 0) return expmod(base, exp / 2, m) ** 2 % m;
+  return (base * expmod(base, exp - 1, m)) % m;
+}
+
+/**
+ * @description base ** exp % m （迭代法）
+ * @param {*} base 基数
+ * @param {*} exp 指数
+ * @param {*} model 模
+ * @returns
+ */
+function expmodIter(base, exp, model) {
+  function iter(e, res, ext) {
+    if (e <= 0) return ext;
+    // console.log(e, res, ext);
+    if (e % 2 === 0) return iter(e / 2, res ** 2 % model, ext);
+    return iter(e - 1, res, (ext * res) % model);
+  }
+  return iter(exp, base, 1);
+}
+
+/**
+ * @description 判断一个数是否为素数（费马定律 - 概率法）
+ * @param {*} digit
+ * @param {*} times
+ * @returns
+ */
+function fastPrime(digit, times) {
+  function random(n) {
+    return Math.floor(Math.random() * n) + 1;
+  }
+
+  function fermatTest(n) {
+    const a = random(n - 1);
+    return expmodIter(a, n, n) === a;
+  }
+  if (times <= 0) return true;
+  if (fermatTest(digit)) {
+    return fastPrime(digit, times - 1);
+  }
+  return false;
+}
+
+实例：fastPrime(1009, 50);
