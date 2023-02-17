@@ -1,0 +1,18 @@
+/**
+ * @description 获取一个数的最小因子（除去偶数无用检查）
+ * @param {*} digit 
+ * @returns 
+ */
+function smallestDivisor(digit) {
+  function next(n) {
+    if (n > 2) return n + 2;
+    return n + 1;
+  }
+  function findDivisor(n, test) {
+    if (test * test > n) return n;
+    if (n % test === 0) return test;
+
+    return findDivisor(n, next(test));
+  }
+  return findDivisor(digit, 2);
+}
