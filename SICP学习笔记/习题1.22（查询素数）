@@ -1,0 +1,68 @@
+
+function smallestDivisor(digit) {
+  function findDivisor(n, test) {
+    if (test * test > n) return n;
+    if (n % test === 0) return test;
+    return findDivisor(n, test + 1);
+  }
+  return findDivisor(digit, 2);
+}
+
+/**
+ * @description 检查一个数是否素数
+ * @param {*} n
+ * @returns
+ */
+function prime(n) {
+  return smallestDivisor(n) === n;
+}
+
+/**
+ * @description 打印检查素数过程耗时
+ * @param {*} n
+ */
+function timedPrimeTest(n) {
+  const startTime = Date.now();
+  if (prime(n)) {
+    console.log(n, '***', Date.now() - startTime);
+  }
+}
+
+实例：timedPrimeTest(19999999);
+
+/**
+ * @description 检查给定范围内连续的各个奇数的素性
+ * @param {*} start 起始数
+ * @param {*} end 结束数
+ */
+function searchForPrimes(start, end) {
+  const sTime = Date.now();
+  if (start % 2 === 0) start += 1;
+  while (start < end) {
+    timedPrimeTest(start);
+    start += 2;
+  }
+  console.log('end', Date.now() - sTime);
+}
+
+/**
+ * @description 获取大于n的最小素数
+ * @param {*} n
+ */
+function searchFirstPrime(n) {
+  const sTime = Date.now();
+  let start = n;
+  if (start % 2 === 0) start += 1;
+  let isPrime = false;
+  do {
+    isPrime = prime(start);
+    start += 2;
+  } while (!isPrime);
+  console.log('end', start - 2, Date.now() - sTime);
+}
+
+实例：searchFirstPrime(1000)
+实例：searchFirstPrime(10000)
+实例：searchFirstPrime(100000)
+实例：searchFirstPrime(1000000)
+实例：searchFirstPrime(10000000)
