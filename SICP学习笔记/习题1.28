@@ -1,0 +1,38 @@
+
+/**
+ * @description base ** exp % m （迭代法）
+ * @param {*} base 基数
+ * @param {*} exp 指数
+ * @param {*} model 模
+ * @returns
+ */
+function expmodIter(base, exp, model) {
+  function iter(e, res, ext) {
+    if (e <= 0) return ext;
+    if (e % 2 === 0) return iter(e / 2, res ** 2 % model, ext);
+    return iter(e - 1, res, (ext * res) % model);
+  }
+  return iter(exp, base, 1);
+}
+
+/**
+ * @description 判断一个数是否为素数（Miller-Rabin定律）
+ * @param {*} n
+ * @returns
+ */
+function fastPrime(n) {
+  let s = 2;
+  while (s < n - 1) {
+    if (s ** 2 % n === 1) return false;
+    if (expmodIter(s, n - 1, n) !== 1) return false;
+    s += 1;
+  }
+  return true;
+}
+
+fastPrime(561);
+fastPrime(1105);
+fastPrime(1729);
+fastPrime(2465);
+fastPrime(2821);
+fastPrime(6601);
