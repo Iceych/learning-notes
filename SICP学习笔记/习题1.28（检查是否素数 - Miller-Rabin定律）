@@ -30,9 +30,41 @@ function fastPrime(n) {
   return true;
 }
 
+
+
 fastPrime(561);
 fastPrime(1105);
 fastPrime(1729);
 fastPrime(2465);
 fastPrime(2821);
 fastPrime(6601);
+
+/**
+ * @description 判断一个数是否为素数（Miller-Rabin定律 - 概率法）
+ * @param {*} digit
+ * @param {*} times
+ * @returns
+ */
+function fastPrimeMR(digit, times) {
+  function random(n) {
+    return Math.floor(Math.random() * n) + 1;
+  }
+
+  function fermatTest(n) {
+    const a = random(n - 1);
+    if (a ** 2 % n === 1) return false;
+    return expmodIter(a, n, n) === a;
+  }
+  if (times <= 0) return true;
+  if (fermatTest(digit)) {
+    return fastPrime(digit, times - 1);
+  }
+  return false;
+}
+
+fastPrimeMR(561);
+fastPrimeMR(1105);
+fastPrimeMR(1729);
+fastPrimeMR(2465);
+fastPrimeMR(2821);
+fastPrimeMR(6601);
