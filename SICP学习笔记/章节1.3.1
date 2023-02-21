@@ -1,0 +1,14 @@
+/**
+ * @description pi/8的收敛函数
+ * @param {*} a 
+ * @param {*} b 
+ * @returns 
+ */
+function piSum(a, b) {
+  function iter(a, b, res) {
+    if (a > b) return res;
+    return iter(a + 4, b, res + 1 / (a * (a + 2)));
+  }
+  return iter(a, b, 0);
+}
+实例：piSum(1,1000)*8
