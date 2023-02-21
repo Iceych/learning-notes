@@ -1,8 +1,9 @@
+
 /**
  * @description pi/8的收敛函数
- * @param {*} a 
- * @param {*} b 
- * @returns 
+ * @param {*} a
+ * @param {*} b
+ * @returns
  */
 function piSum(a, b) {
   function iter(a, b, res) {
@@ -11,4 +12,44 @@ function piSum(a, b) {
   }
   return iter(a, b, 0);
 }
-实例：piSum(1,1000)*8
+// 实例：piSum(1,1000)*8
+
+/**
+ * @description 求和的过程模式抽象
+ * @param {*} f 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @param {*} res 累加结果
+ * @returns
+ */
+function sum(f, a, b, next, res = 0) {
+  if (a > b) {
+    return res;
+  }
+  return sum(f, next(a), b, next, res + f(a, b));
+}
+/**
+ * @description 次方
+ * @param {*} x 
+ * @returns 
+ */
+function cube(x) {
+  return x ** 3;
+}
+
+/**
+ * 次方在范围a~b之间的定积分
+ * @param {*} f 
+ * @param {*} a 
+ * @param {*} b 
+ * @param {*} dx 
+ * @returns 
+ */
+function integral(f, a, b, dx) {
+  function addDx(x) {
+    return x + dx;
+  }
+  return sum(f, a, b, addDx) * dx;
+}
+实例：integral(cube, 0, 1, 0.001);
