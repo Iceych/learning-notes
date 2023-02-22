@@ -1,0 +1,108 @@
+
+/**
+ * @description 带过滤器的积累函数
+ * @param {*} filter
+ * @param {*} combiner
+ * @param {*} nullValue
+ * @param {*} term
+ * @param {*} a
+ * @param {*} next
+ * @param {*} b
+ * @returns
+ */
+function filteredAccumulate(filter, combiner, nullValue, term, a, next, b) {
+  if (a > b) {
+    return nullValue;
+  }
+  const newValue = term(a, b);
+  let value;
+  if (!filter(newValue)) value = nullValue;
+  else value = combiner(nullValue, newValue);
+  return filteredAccumulate(filter, combiner, value, term, next(a), next, b);
+}
+
+/**
+ * @description base ** exp % m （迭代法）
+ * @param {*} base 基数
+ * @param {*} exp 指数
+ * @param {*} model 模
+ * @returns
+ */
+function expmodIter(base, exp, model) {
+  function iter(e, res, ext) {
+    if (e <= 0) return ext;
+    if (e % 2 === 0) return iter(e / 2, res ** 2 % model, ext);
+    return iter(e - 1, res, (ext * res) % model);
+  }
+  return iter(exp, base, 1);
+}
+
+/**
+ * @description 判断一个数是否为素数（Miller-Rabin定律）
+ * @param {*} n
+ * @returns
+ */
+function prime(n) {
+  let s = 2;
+  while (s < n - 1) {
+    if (s ** 2 % n === 1) return false;
+    if (expmodIter(s, n - 1, n) !== 1) return false;
+    s += 1;
+  }
+  return true;
+}
+
+/**
+ * @description 获取区间a~b中所有的素数之和
+ * @param {*} a
+ * @param {*} b
+ * @returns
+ */
+function primeFilterAcc(a, b) {
+  function combiner(x, y) {
+    return x + y;
+  }
+  function term(x) {
+    return x;
+  }
+  function next(x) {
+    return x + 1;
+  }
+  return filteredAccumulate(prime, combiner, 0, term, a, next, b);
+}
+primeFilterAcc(1, 10);
+
+/**
+ * @description 获取一个数的最大公约数（基于O(根号n)）
+ * @param {*} a
+ * @param {*} b
+ * @returns
+ */
+function GCD(a, b) {
+  if (b === 0) return a;
+  return GCD(b, a % b);
+}
+
+GCD(206, 40);
+
+/**
+ * @description 小于n的所有与n互素的正整数之乘积
+ * @param {*} n
+ * @returns
+ */
+function gcdFilterAcc(n) {
+  function combiner(x, y) {
+    return x * y;
+  }
+  function term(x) {
+    return x;
+  }
+  function next(x) {
+    return x + 1;
+  }
+  function filter(x) {
+    return GCD(x, n) === 1;
+  }
+  return filteredAccumulate(filter, combiner, 1, term, 1, next, n);
+}
+gcdFilterAcc(7);
