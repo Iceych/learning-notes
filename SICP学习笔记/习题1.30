@@ -1,0 +1,15 @@
+/**
+ * @description 求和的过程模式抽象--迭代法-线性递归
+ * @param {*} f 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @param {*} res 累加结果
+ * @returns
+ */
+function sum(term, a, b, next, res = 0) {
+  if (a > b) {
+    return res;
+  }
+  return sum(term, next(a), b, next, res + term(a, b));
+}
