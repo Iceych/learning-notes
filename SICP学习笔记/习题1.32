@@ -1,0 +1,47 @@
+
+/**
+ * @description 积累函数
+ * @param {*} combiner 各项累积函数
+ * @param {*} nullValue 基本值
+ * @param {*} term
+ * @param {*} a
+ * @param {*} next
+ * @param {*} b
+ * @returns
+ */
+function accumulate(combiner, nullValue, term, a, next, b) {
+  if (a > b) {
+    return nullValue;
+  }
+  return accumulate(combiner, combiner(nullValue, term(a, b)), term, next(a), next, b);
+}
+
+/**
+ * @description 求给定范围各点的某个函数值的和 - 递归法
+ * @param {*} term 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @returns
+ */
+function sumAcc(term, a, next, b) {
+  function combiner(a, b) {
+    return a + b;
+  }
+  return accumulate(combiner, 0, term, a, next, b);
+}
+
+/**
+ * @description 求给定范围各点的某个函数值的乘积 - 递归法
+ * @param {*} term 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @returns
+ */
+function productAcc(term, a, next, b) {
+  function combiner(a, b) {
+    return a * b;
+  }
+  return accumulate(combiner, 0, term, a, next, b);
+}
