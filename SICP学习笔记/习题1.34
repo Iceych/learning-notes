@@ -1,0 +1,8 @@
+function f(g){
+  console.log(g)
+  return g(2)
+}
+
+f(f)
+
+答：执行到第二步的时候，g=2，故此，报错：VM1616:3 Uncaught TypeError: g is not a function
