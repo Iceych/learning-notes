@@ -1,0 +1,44 @@
+
+/**
+ * @description 求和的过程模式抽象
+ * @param {*} f 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @param {*} res 累加结果
+ * @returns
+ */
+function sum(term, a, b, next, res = 0) {
+  if (a > b) {
+    return res;
+  }
+  return sum(term, next(a), b, next, res + term(a, b));
+}
+
+/**
+ * @description 辛普森规则计算函数f在范围a~b之间的定积分近似值
+ * @param {*} f 
+ * @param {*} a 
+ * @param {*} b 
+ * @param {*} n 
+ * @returns 
+ */
+function integralBetter(f, a, b, n) {
+  const h = (b - a) / n;
+  function next(x) {
+    return x + 1;
+  }
+  function y(k) {
+    return f(a + k * ((b - a) / n));
+  }
+
+  function term(k) {
+    const factor = k === 0 ? 1 : 2 ** (1 + (k % 2));
+    return factor * y(k);
+  }
+  return (h / 3) * sum(term, a, n, next);
+}
+function cube(x) {
+  return x ** 3;
+}
+实例：integralBetter(cube, 0, 1, 1000);
