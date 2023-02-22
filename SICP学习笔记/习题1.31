@@ -1,0 +1,43 @@
+/**
+ * @description 求给定范围各点的某个函数值的乘积 - 迭代法
+ * @param {*} term 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @param {*} res 累加结果
+ * @returns
+ */
+function productIter(term, a, b, next, res = 1) {
+  if (a > b) {
+    return res;
+  }
+  return productIter(term, next(a), b, next, res * term(a, b));
+}
+
+/**
+ * @description 求给定范围各点的某个函数值的乘积 - 递归法
+ * @param {*} term 函数
+ * @param {*} a 起始值
+ * @param {*} b 边界值
+ * @param {*} next 起始值增长函数
+ * @returns
+ */
+function product(term, a, b, next) {
+  if (a > b) {
+    return 1;
+  }
+  return term(a) * product(term, next(a), b, next);
+}
+
+function factorial(a, b) {
+  function next(x) {
+    return x + 1;
+  }
+  function term(x) {
+    if (x % 2 !== 0) return (x + 1) / x;
+    return x / (x + 1);
+  }
+  return 4 * productIter(term, a, b, next);
+}
+
+factorial(2, 100)
