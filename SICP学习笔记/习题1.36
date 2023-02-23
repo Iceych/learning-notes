@@ -1,0 +1,22 @@
+/**
+ * @description 求某个函数的不动点
+ * @param {*} f
+ * @param {*} guess
+ * @param {*} limit
+ * @returns
+ */
+let m = 0;
+function fixedPoint(f, guess, limit) {
+  const value = f(guess);
+  if (Math.abs(guess - value) < limit) return value;
+  console.log("iii-", guess, ++m);
+  return fixedPoint(f, value, limit);
+}
+
+fixedPoint((x) => Math.log(1000) / Math.log(x), 2, 0.00000000000001);
+m = 0;
+fixedPoint((x) => (Math.log(1000) / Math.log(x) + x) / 2, 2, 0.00000000000001);
+
+总结：
+采用平均阻尼：20次；
+不采用平均阻尼：83次
