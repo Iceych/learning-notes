@@ -1,0 +1,32 @@
+
+/**
+ * @description 无穷连分式 - 迭代法
+ * @param {*} N
+ * @param {*} D
+ * @param {*} k
+ * @param {*} res
+ * @returns
+ */
+function contFracIter(N, D, k, res = D(k)) {
+  if (k === 1) return N(k) / res;
+  return contFracIter(N, D, k - 1, D(k - 1) + N(k) / res);
+}
+
+/**
+ * @description 计算x的正切值（近似）
+ * @param {*} x 
+ * @param {*} k 计算次数
+ * @returns 
+ */
+function tanCf(x, k) {
+  function N(i) {
+    if (i === 1) return x;
+    return -(x ** 2);
+  }
+  function D(i) {
+    return 2 * i - 1;
+  }
+  return contFracIter(N, D, k);
+}
+
+tanCf(3, 1000);
