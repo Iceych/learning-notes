@@ -13,7 +13,7 @@ function contFracIter(N, D, k, res = D(k)) {
 }
 
 /**
- * @description 计算x的正切值（近似）
+ * @description 计算x的正切值（近似）- 基于Lambert公式
  * @param {*} x 
  * @param {*} k 计算次数
  * @returns 
