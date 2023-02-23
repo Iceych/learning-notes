@@ -1,0 +1,14 @@
+/**
+ * @description 求某个函数的不动点
+ * @param {*} f
+ * @param {*} guess
+ * @param {*} limit
+ * @returns
+ */
+function fixedPoint(f, guess, limit) {
+  const value = f(guess);
+  if (Math.abs(guess - value) < limit) return value;
+  return fixedPoint(f, value, limit);
+}
+
+fixedPoint((x) => 1 + 1 / x, 2, 0.000000000000001)
