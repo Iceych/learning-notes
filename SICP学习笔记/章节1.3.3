@@ -1,0 +1,62 @@
+
+/**
+ * 二分法求某个函数的零点
+ * @param {*} f
+ * @param {*} a
+ * @param {*} b
+ * @param {*} limit
+ * @returns
+ */
+function halfInterval(f, a, b, limit) {
+  const valueA = f(a),
+    valueB = f(b);
+  if (valueA === 0) return a;
+  if (valueB === 0) return b;
+  if (valueA * valueB > 0) return null;
+
+  let positive = a,
+    negative = b;
+  if (valueA < 0) {
+    positive = b;
+    negative = a;
+  }
+
+  const half = (a + b) / 2;
+
+  if (Math.abs(a - b) < limit) return half;
+
+  if (f(half) < 0) return halfInterval(f, positive, half, limit);
+  return halfInterval(f, half, negative, limit);
+}
+
+// 求Math.PI的近似值
+halfInterval(Math.sin, 2, 4, 0.000000000000001);
+
+halfInterval(
+  (x) => {
+    return x ** 3 - 2 * x - 3;
+  },
+  1,
+  2,
+  0.000000000000001,
+);
+
+/**
+ * @description 求某个函数的不动点
+ * @param {*} f
+ * @param {*} guess
+ * @param {*} limit
+ * @returns
+ */
+function fixedPoint(f, guess, limit) {
+  const value = f(guess);
+  if (Math.abs(guess - value) < limit) return value;
+  return fixedPoint(f, value, limit);
+}
+
+fixedPoint(Math.cos, 1, 0.0000000000000001);
+
+fixedPoint((x) => Math.sin(x) + Math.cos(x), 1, 0.000000000000001);
+
+const y = 2;
+fixedPoint((x) => (x + y / x) / 2, y, 0.0001);
