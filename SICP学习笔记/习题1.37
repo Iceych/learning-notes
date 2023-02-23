@@ -1,0 +1,46 @@
+
+/**
+ * @description 无穷连分式 - 递归法
+ * @param {*} N
+ * @param {*} D
+ * @param {*} k
+ * @returns
+ */
+function contFrac(N, D, k) {
+  function iter(i) {
+    if (i > k) return N(i) / D(i);
+    return N(i) / (D(i) + iter(i + 1));
+  }
+  return iter(1);
+}
+contFrac(
+  () => 1,
+  () => 1,
+  100,
+);
+
+/**
+ * @description 无穷连分式 - 迭代法
+ * @param {*} N
+ * @param {*} D
+ * @param {*} k
+ * @param {*} res
+ * @returns
+ */
+function contFracIter(N, D, k, res = D(k)) {
+  if (k === 1) return N(k) / res;
+  return contFracIter(N, D, k - 1, D(k - 1) + N(k) / res);
+}
+contFracIter(
+  () => 1,
+  () => 1,
+  100,
+);
+
+contFracIter(
+  () => 1,
+  () => 1,
+  11,
+);
+
+总结：k = 11时，能保证得到的近似值具有十进制的4位精度；
