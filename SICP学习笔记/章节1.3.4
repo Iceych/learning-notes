@@ -40,9 +40,9 @@ sqrt(10, 0.0000001);
 
 /**
  * 开立方根（不动点 + 平均阻尼 思想的结合）
- * @param {*} x 
- * @param {*} limit 
- * @returns 
+ * @param {*} x
+ * @param {*} limit
+ * @returns
  */
 function cubeRoot(x, limit) {
   return fixedPoint(
@@ -53,3 +53,47 @@ function cubeRoot(x, limit) {
 }
 
 cubeRoot(8, 0.00001);
+
+// 牛顿法
+
+/**
+ * @description 函数g求导
+ * @param {*} g
+ * @returns
+ */
+function deriv(g) {
+  const dx = 0.00001;
+  return (x) => (g(x + dx) - g(x)) / dx;
+}
+
+/**
+ * @description 牛顿法公式
+ * @param {*} g 希望找到零点的函数
+ * @returns
+ */
+function newtonTransform(g) {
+  return (x) => x - g(x) / deriv(g)(x);
+}
+
+/**
+ * @description 求牛顿法的不动点
+ * @param {*} g 希望找到零点的函数
+ * @param {*} guess 初始猜测值
+ * @param {*} limit
+ * @returns
+ */
+function newtonsMethod(g, guess, limit) {
+  return fixedPoint(newtonTransform(g), guess, limit);
+}
+
+/**
+ * @description 利用牛顿法求平方根
+ * @param {*} x
+ * @param {*} limit
+ * @returns
+ */
+function sqrtNewton(x, limit) {
+  return newtonsMethod((y) => y ** 2 - x, 1, limit);
+}
+
+sqrtNewton(10, 0.0000001);
