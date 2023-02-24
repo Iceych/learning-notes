@@ -1,0 +1,55 @@
+
+/**
+ * @description 求某个函数的不动点
+ * @param {*} f
+ * @param {*} guess
+ * @param {*} limit
+ * @returns
+ */
+function fixedPoint(f, guess, limit) {
+  const value = f(guess);
+  if (Math.abs(guess - value) < limit) return value;
+  return fixedPoint(f, value, limit);
+}
+
+/**
+ * 平均阻尼函数
+ * @param {*} f
+ * @param {*} x
+ * @returns
+ */
+function averageDamp(f) {
+  return (x) => (x + f(x)) / 2;
+}
+
+/**
+ * 开平方根（不动点 + 平均阻尼 思想的结合）
+ * @param {*} x
+ * @param {*} limit
+ * @returns
+ */
+function sqrt(x, limit) {
+  return fixedPoint(
+    averageDamp((y) => x / y),
+    1.0,
+    limit,
+  );
+}
+
+sqrt(10, 0.0000001);
+
+/**
+ * 开立方根（不动点 + 平均阻尼 思想的结合）
+ * @param {*} x 
+ * @param {*} limit 
+ * @returns 
+ */
+function cubeRoot(x, limit) {
+  return fixedPoint(
+    averageDamp((y) => x / y ** 2),
+    1.0,
+    limit,
+  );
+}
+
+cubeRoot(8, 0.00001);
