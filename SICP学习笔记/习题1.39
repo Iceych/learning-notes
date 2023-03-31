@@ -1,4 +1,4 @@
-
+```javascript
 /**
  * @description 无穷连分式 - 迭代法
  * @param {*} N
@@ -28,5 +28,5 @@ function tanCf(x, k) {
   }
   return contFracIter(N, D, k);
 }
-
-tanCf(3, 1000);
+```
+- ```tanCf(3, 1000);```
